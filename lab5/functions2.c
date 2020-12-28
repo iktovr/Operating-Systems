@@ -31,9 +31,13 @@ int PrimeCount(int A, int B) {
 		if (sieve[i] != 0) {
 			continue;
 		}
-		++n;
 		for (int j = i + i; j <= B; j += i) {
 			sieve[j] = 1;
+		}
+	}
+	for (int i = A; i <= B; ++i) {
+		if (sieve[i] == 0) {
+			++n;
 		}
 	}
 	return n;
