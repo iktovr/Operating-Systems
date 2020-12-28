@@ -33,7 +33,7 @@ int main() {
 				perror("invalid input");
 				exit(1);
 			}
-			PrimeCount = dlsym(handle, "PrimeCount");
+			PrimeCount = (int (*)(int, int))dlsym(handle, "PrimeCount");
 			check(PrimeCount, dlerror(), NULL);
 			printf("Prime numbers: %d\n", (*PrimeCount)(a, b));
 		
@@ -42,7 +42,7 @@ int main() {
 				perror("invalid input");
 				exit(1);
 			}
-			E = dlsym(handle, "E");
+			E = (float (*)(int))dlsym(handle, "E");
 			check(E, dlerror(), NULL);
 			printf("e = %f\n", (*E)(x));
 		}
