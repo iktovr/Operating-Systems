@@ -43,7 +43,7 @@ int main() {
 
 	int id1 = fork();
 
-	if (id1 == -1)	{
+	if (id1 == -1)  {
 		perror("fork 1 error");
 		return -1;
 		
@@ -61,7 +61,7 @@ int main() {
 	} else {
 		int id2 = fork();
 
-		if (id2 == -1)	{
+		if (id2 == -1)  {
 			perror("fork 2 error");
 			return -1;
 
