@@ -4,27 +4,33 @@
 int main() {
 	char fn1[256];
 	char fn2[256];
-	scanf("%s", fn1);
-	scanf("%s", fn2);
+	if (scanf("%s", fn1) <= 0) {
+		perror("scanf error");
+		return -1;
+	}
+	if (scanf("%s", fn2) <= 0) {
+		perror("scanf error");
+		return -1;
+	}
 	FILE* file1 = fopen(fn1, "wt");
 	if (file1 == NULL) {
 		perror("fopen error");
-		return 1;
+		return -1;
 	}
 	FILE* file2 = fopen(fn2, "wt");
 	if (file2 == NULL) {
 		perror("fopen error");
-		return 1;
+		return -1;
 	}
 
 	int fd1[2], fd2[2];
 	if (pipe(fd1) != 0) {
 		perror("pipe error");
-		return 1;
+		return -1;
 	}
 	if (pipe(fd2) != 0) {
 		perror("pipe error");
-		return 1;
+		return -1;
 	}
 
 	int id1 = fork();
@@ -40,18 +46,18 @@ int main() {
 		close(fd1[1]);
 		if (dup2(fd1[0], fileno(stdin)) == -1) {
 			perror("dup2 error");
-			return 1;
+			return -1;
 		}
 		if (dup2(fileno(file1), fileno(stdout)) == -1) {
 			perror("dup2 error");
-			return 1;
+			return -1;
 		}
 		fclose(file1);
 
 		char * const * null = NULL;
 		if (execv("child", null) == -1) {
 			perror("execv error");
-			return 1;
+			return -1;
 		}
 
 	} else {
@@ -68,18 +74,18 @@ int main() {
 			close(fd2[1]);
 			if (dup2(fd2[0], fileno(stdin)) == -1) {
 				perror("dup2 error");
-				return 1;
+				return -1;
 			}
 			if (dup2(fileno(file2), fileno(stdout)) == -1) {
 				perror("dup2 error");
-				return 1;
+				return -1;
 			}
 			fclose(file2);
 
 			char * const * null = NULL;
 			if (execv("child", null) == -1) {
 				perror("execv error");
-				return 1;
+				return -1;
 			}
 
 		} else {
