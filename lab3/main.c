@@ -1,6 +1,6 @@
 #include "stdio.h"
 #include "stdlib.h"
-// #include "time.h"
+#include "time.h"
 #include "pthread.h"
 
 int score1, score2, rounds;
@@ -30,9 +30,13 @@ void* experiment(void *arg) {
 }
 
 int main(int argc, char const *argv[]) {
+	if (argc < 2) {
+		printf("expected count of threads\n");
+		return 1;
+	}
 	int th_count = atoi(argv[1]);
 	if (th_count <= 0) {
-		perror("invalid argument");
+		printf("invalid argument\n");
 		return 1;
 	}
 
