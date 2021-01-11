@@ -71,7 +71,7 @@ void* result_waiter(void* arg) {
 	zmqpp::socket *in_sock = reinterpret_cast<zmqpp::socket*>(arg);
 	zmqpp::message msg;
 	int rid, act;
-	while (in_sock) {
+	while (*in_sock) {
 		in_sock->receive(msg);
 		msg >> rid >> act;
 
@@ -178,7 +178,7 @@ int main() {
 				node_coord node(--network.end(), --network.back().first.end());
 
 				int pid = fork();
-				check(id, -1, "fork error");
+				check(pid, -1, "fork error");
 				if (pid == 0) {
 					check(execl("node", "node", std::to_string(id).c_str(), std::to_string(-1).c_str(),
 								bridge_port.c_str(), NULL), -1, "execl error")
