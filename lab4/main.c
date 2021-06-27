@@ -32,9 +32,9 @@ int main() {
 
 	char mfilename1[] = "mmap1";
 	char mfilename2[] = "mmap2";
-	int mfile1 = open(mfilename1, O_RDWR | O_CREAT);
+	int mfile1 = open(mfilename1, O_RDWR | O_CREAT, S_IRWXU);
 	check(mfile1, "open 1 error", 0)
-	int mfile2 = open(mfilename2, O_RDWR | O_CREAT);
+	int mfile2 = open(mfilename2, O_RDWR | O_CREAT, S_IRWXU);
 	check(mfile2, "open 2 error", 0)
 	size_t i1 = 0, i2 = 0;
 
@@ -163,6 +163,8 @@ int main() {
 			check(munmap(fmap2, pagesize), "munmap error", -1);
 			close(mfile1);
 			close(mfile2);
+			check(remove(mfilename1), "remove 1 error", -1)
+			check(remove(mfilename2), "remove 2 error", -1)
 		}
 	}
 	return 0;

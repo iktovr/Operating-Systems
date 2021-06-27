@@ -18,7 +18,7 @@ char * add(char *str, int cap, int n, char c) {
 	return str;
 }
 
-int main(int agrc, char const *argv[]) {
+int main(int argc, char const *argv[]) {
 	size_t pagesize = sysconf(_SC_PAGESIZE);
 	char c = '\0';
 	int n = 0;
@@ -26,6 +26,10 @@ int main(int agrc, char const *argv[]) {
 	char* str = (char *)malloc(sizeof(char) * cap);
 	check(str, "malloc error", NULL)
 
+	if (argc < 3) {
+		perror("invalid child arguments");
+		exit(-1);
+	}
 	int mfile = open(argv[1], O_RDWR);
 	check(mfile, "open error", -1)
 	int pid = atoi(argv[2]);
